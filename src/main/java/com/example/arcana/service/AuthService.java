@@ -104,10 +104,10 @@ public class AuthService {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        String token = jwtProvider.generateToken(authenticate);
+       
         return AuthenticationResponse.builder()
-                .authenticationToken(token)
-                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+//                .authenticationToken(token)         forse non seeerveeeeeeee come tuttee quelle cazzo di classi  der cazzo de indiano 
+//                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
                 .build();
