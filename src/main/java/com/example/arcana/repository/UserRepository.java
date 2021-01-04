@@ -1,4 +1,4 @@
-package repository;
+package com.example.arcana.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

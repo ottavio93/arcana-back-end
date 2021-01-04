@@ -1,4 +1,4 @@
-package service;
+package com.example.arcana.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

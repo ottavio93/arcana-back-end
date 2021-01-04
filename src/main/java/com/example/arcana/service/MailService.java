@@ -1,4 +1,4 @@
-package service;
+package com.example.arcana.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +9,8 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.example.arcana.exception.SpringArcanaException;
 import com.example.arcana.model.NotificationEmail;
-
-import exception.SpringArcanaException;
 
 @Service
 @AllArgsConstructor

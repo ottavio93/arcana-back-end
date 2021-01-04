@@ -1,4 +1,4 @@
-package service;
+package com.example.arcana.service;
 
 
 
@@ -14,20 +14,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.arcana.dto.AuthenticationResponse;
+import com.example.arcana.dto.LoginRequest;
+import com.example.arcana.dto.RefreshTokenRequest;
+import com.example.arcana.dto.RegisterRequest;
+import com.example.arcana.exception.SpringArcanaException;
 import com.example.arcana.model.NotificationEmail;
 import com.example.arcana.model.User;
 import com.example.arcana.model.VerificationToken;
+import com.example.arcana.repository.UserRepository;
+import com.example.arcana.repository.VerificationTokenRepository;
+import com.example.arcana.security.JwtProvider;
 
-import dto.AuthenticationResponse;
-import dto.LoginRequest;
-import dto.RefreshTokenRequest;
-import dto.RegisterRequest;
-import exception.SpringArcanaException;
 import lombok.AllArgsConstructor;
-import repository.UserRepository;
-import repository.VerificationTokenRepository;
-import security.JwtProvider;
-
 
 import java.util.UUID;
 import java.time.Instant;
@@ -35,17 +34,16 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class AuthService {
-
+	  private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtProvider jwtProvider;
-    private final RefreshTokenService refreshTokenService;
+   private final JwtProvider  jwtProvider;
+   private final RefreshTokenService refreshTokenService;
 
+    @Transactional
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
@@ -93,6 +91,15 @@ public class AuthService {
         fetchUserAndEnable(verificationToken.orElseThrow(() -> new SpringArcanaException("Invalid Token")));
     }
 
+   
+
+    
+
+    public boolean isLoggedIn() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
+    }
+
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
@@ -104,21 +111,5 @@ public class AuthService {
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
                 .build();
-    }
-
-    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
-        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
-        return AuthenticationResponse.builder()
-                .authenticationToken(token)
-                .refreshToken(refreshTokenRequest.getRefreshToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
-                .username(refreshTokenRequest.getUsername())
-                .build();
-    }
-
-    public boolean isLoggedIn() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 }

@@ -1,4 +1,4 @@
-package service;
+package com.example.arcana.service;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -7,12 +7,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.arcana.exception.SpringArcanaException;
 import com.example.arcana.model.RefreshToken;
+import com.example.arcana.repository.RefreshTokenRepository;
 
-
-import exception.SpringArcanaException;
 import lombok.AllArgsConstructor;
-import repository.RefreshTokenRepository;
 
 @Service
 @AllArgsConstructor

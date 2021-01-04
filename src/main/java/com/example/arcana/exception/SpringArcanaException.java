@@ -1,4 +1,4 @@
-package exception;
+package com.example.arcana.exception;
 
 public class SpringArcanaException extends RuntimeException {
     public SpringArcanaException(String exMessage, Exception exception) {
