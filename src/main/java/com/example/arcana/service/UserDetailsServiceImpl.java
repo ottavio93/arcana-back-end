@@ -39,5 +39,37 @@ import java.util.Collection; import java.util.Optional;
   user.isEnabled(), true, true, true, getAuthorities("USER")); }
   
   private Collection<? extends GrantedAuthority> getAuthorities(String role) {
-  return singletonList(new SimpleGrantedAuthority(role)); } }
+  return singletonList(new SimpleGrantedAuthority(role)); }
+  
+  
+  
+
+  
+  @Transactional(readOnly = true)public long getScoreByUsername(String
+  username) { 
+	  Optional<User> userOptional =
+  userRepository.findByUsername(username); 
+	  User user = userOptional
+  .orElseThrow(() -> new UsernameNotFoundException("No user " +
+  "Found with username : " + username));
+  
+  return user.getScore(); }
+
+
+  
+//  @Transactional(readOnly = true)
+//  public PostResponse getPost(Long id) {
+//      Post post = postRepository.findById(id)
+//              .orElseThrow(() -> new PostNotFoundException(id.toString()));
+//      return postMapper.mapToDto(post);
+//  }
+
+  
+  
+  
+  
+  
+  
+  
+  }
  

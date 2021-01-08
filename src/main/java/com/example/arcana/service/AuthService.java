@@ -53,12 +53,13 @@ public class AuthService {
         user.setEnabled(false);
 
         userRepository.save(user);
-
         String token = generateVerificationToken(user);
+       String verifyPath="http://localhost:8080/api/auth/accountVerification/"+token;
+        
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), "Thank you for signing up to Spring Reddit, " +
-                "please click on the below url to activate your account : " +
-                "http://localhost:8080/api/auth/accountVerification/" + token));
+                "please click on the below url to activate your account : " +verifyPath
+             ));
     }
     
     @Transactional(readOnly = true)
@@ -90,26 +91,40 @@ public class AuthService {
         Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
         fetchUserAndEnable(verificationToken.orElseThrow(() -> new SpringArcanaException("Invalid Token")));
     }
-
+ 
    
 
     
-
-    public boolean isLoggedIn() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
-    }
-
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
+        UserDetailsServiceImpl u=new UserDetailsServiceImpl(userRepository);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-       
+        String token = jwtProvider.generateToken(authenticate);
+        long score=u.getScoreByUsername(loginRequest.getUsername());
         return AuthenticationResponse.builder()
-//                .authenticationToken(token)         forse non seeerveeeeeeee come tuttee quelle cazzo di classi  der cazzo de indiano 
-//                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
-                .username(loginRequest.getUsername())
+            .authenticationToken(token)        
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+              .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(loginRequest.getUsername() )
+                .score(score)
                 .build();
+    }  
+
+    
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
+                .build();
+    }
+
+     public boolean isLoggedIn() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 }

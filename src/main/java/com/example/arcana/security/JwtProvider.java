@@ -39,7 +39,7 @@ import static io.jsonwebtoken.Jwts.parser; import static java.util.Date.from;
   public String generateToken(Authentication authentication) { User principal =
   (User) authentication.getPrincipal(); return Jwts.builder()
   .setSubject(principal.getUsername()) .setIssuedAt(from(Instant.now()))
-  .signWith(getPrivateKey())
+ // .signWith(getPrivateKey())
   .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
   .compact(); }
   
