@@ -15,7 +15,7 @@ package com.example.arcana.config;
   
   @Override public void addCorsMappings(CorsRegistry corsRegistry) {
   corsRegistry.addMapping("/**") .allowedOrigins("*") .allowedMethods("*")
-  .maxAge(3600L) .allowedHeaders("*") .exposedHeaders("Authorization");
+  .maxAge(3600L) .allowedHeaders("*") .exposedHeaders("Authorization").allowedOriginPatterns("*");
    }}
 //  
 //  @Override public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -48,9 +48,12 @@ import lombok.AllArgsConstructor;
           .permitAll()
           .antMatchers(HttpMethod.GET, "/api/posts/**")
           .permitAll()
+          .antMatchers(HttpMethod.GET, "/data/**")
+          .permitAll()
           .antMatchers(HttpMethod.POST, "/api/auth/**")
           .permitAll()
-          
+          .antMatchers(HttpMethod.POST, "/data/**")
+          .permitAll()
           .anyRequest()
           .authenticated();
     	  httpSecurity.addFilterBefore(jwtAuthenticationFilter,

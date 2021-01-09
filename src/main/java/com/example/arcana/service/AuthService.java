@@ -22,6 +22,7 @@ import com.example.arcana.exception.SpringArcanaException;
 import com.example.arcana.model.NotificationEmail;
 import com.example.arcana.model.User;
 import com.example.arcana.model.VerificationToken;
+import com.example.arcana.repository.TarokkoRepository;
 import com.example.arcana.repository.UserRepository;
 import com.example.arcana.repository.VerificationTokenRepository;
 import com.example.arcana.security.JwtProvider;
@@ -42,7 +43,7 @@ public class AuthService {
     private final MailService mailService;
    private final JwtProvider  jwtProvider;
    private final RefreshTokenService refreshTokenService;
-
+   private final TarokkoRepository taroccoRepository;
     @Transactional
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
@@ -98,9 +99,9 @@ public class AuthService {
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
-        UserDetailsServiceImpl u=new UserDetailsServiceImpl(userRepository);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
+        UserDetailsServiceImpl u=new UserDetailsServiceImpl(userRepository,taroccoRepository);
         long score=u.getScoreByUsername(loginRequest.getUsername());
         return AuthenticationResponse.builder()
             .authenticationToken(token)        

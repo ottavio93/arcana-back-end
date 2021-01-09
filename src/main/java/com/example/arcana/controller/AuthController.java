@@ -69,6 +69,7 @@ private final UserRepository u;
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+        System.out.print('h');
         return ResponseEntity.status(OK).body("Refresh Token Deleted Successfully!!");
     }
 
@@ -81,7 +82,7 @@ private final UserRepository u;
     }
     
     @PostMapping("/setscore")
-    public ResponseEntity<Void> setScore( @RequestBody ScoreRequest scorequest) {
+    public ResponseEntity<Void> setScore( @Valid @RequestBody ScoreRequest scorequest) {
     	System.out.print("ggggg");
     	  Optional<User> userOptional =
     			  u.findByUsername(scorequest.getUsername()); 
