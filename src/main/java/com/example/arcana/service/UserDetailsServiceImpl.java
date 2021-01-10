@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import com.example.arcana.dto.RegisterRequest;
 import com.example.arcana.dto.TarokRequest;
 import com.example.arcana.model.NotificationEmail;
-import com.example.arcana.model.Tarokko;
+import com.example.arcana.model.Letture;
 import com.example.arcana.model.User;
 import com.example.arcana.repository.TarokkoRepository;
 import com.example.arcana.repository.UserRepository;
@@ -69,7 +69,7 @@ import java.util.Optional;
 
   
   @Transactional(readOnly = true)
-  public List<Tarokko> geTaroksByUsername(String
+  public List<Letture> geTaroksByUsername(String
   username) { 
 	
 	  User user = userRepository.findByUsername(username)
@@ -83,10 +83,12 @@ import java.util.Optional;
   @Transactional(readOnly = false)
   public void saveTarok(TarokRequest
 		  tarokRequest) { 
-	  Tarokko tarok = new Tarokko();
-	  tarok.setTarokkoName(tarokRequest.getTarokkoName());
-	
-	  tarok.setDescription(tarokRequest.getDescription());
+	  Letture tarok = new Letture();
+	  tarok.setCreated(Instant.now().toString());
+	 
+	  tarok.setDescriptionPassato(tarokRequest.getDescriptionPassato());
+	  tarok.setDescriptionPresente(tarokRequest.getDescriptionPresente());
+	  tarok.setDescriptionFuturo(tarokRequest.getDescriptionFuturo());
 	  tarok.setScore(tarokRequest.getScore());
 	 String userName=tarokRequest.getUserName();
 	  Optional<User> userOptional =

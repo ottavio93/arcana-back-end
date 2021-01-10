@@ -14,8 +14,10 @@ package com.example.arcana.config;
   @EnableWebMvc public class WebConfig implements WebMvcConfigurer {
   
   @Override public void addCorsMappings(CorsRegistry corsRegistry) {
-  corsRegistry.addMapping("/**") .allowedOrigins("*") .allowedMethods("*")
-  .maxAge(3600L) .allowedHeaders("*") .exposedHeaders("Authorization").allowedOriginPatterns("*");
+  corsRegistry.addMapping("/**") .allowedOriginPatterns("/**") .allowedOrigins("*") .allowedMethods("*")
+  .maxAge(3600L) .allowedHeaders("*")  .exposedHeaders("Authorization") 
+   
+  ;
    }}
 //  
 //  @Override public void addResourceHandlers(ResourceHandlerRegistry registry) {

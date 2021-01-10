@@ -52,7 +52,9 @@ import lombok.AllArgsConstructor;
           .permitAll()
           .antMatchers(HttpMethod.POST, "/api/auth/**")
           .permitAll()
-          .antMatchers(HttpMethod.POST, "/data/**")
+          .antMatchers(HttpMethod.POST, "/api/auth/create")
+          .permitAll()
+          .antMatchers(HttpMethod.POST, "/data/create")
           .permitAll()
           .anyRequest()
           .authenticated();

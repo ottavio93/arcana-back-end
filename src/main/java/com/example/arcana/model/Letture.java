@@ -29,13 +29,18 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tarokko  {
+public class Letture  {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long postId;
-   private String TarokkoName;
-    private String description;
-    private int score ;
+    private int score;
+   @Lob
+    private String descriptionPassato;
+   @Lob
+   private String descriptionPresente;
+   @Lob
+   private String descriptionFuturo;
+    private String created;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userName", referencedColumnName = "userName")
     private User user;

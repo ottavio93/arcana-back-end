@@ -5,18 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.arcana.dto.AuthenticationResponse;
 import com.example.arcana.dto.LoginRequest;
 import com.example.arcana.dto.RefreshTokenRequest;
 import com.example.arcana.dto.RegisterRequest;
 import com.example.arcana.dto.ScoreRequest;
+import com.example.arcana.dto.TarokRequest;
+import com.example.arcana.model.Letture;
 import com.example.arcana.model.User;
 import com.example.arcana.repository.UserRepository;
 import com.example.arcana.service.AuthService;
@@ -28,6 +24,7 @@ import lombok.AllArgsConstructor;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -94,5 +91,22 @@ private final UserRepository u;
     	u.save(user);
     	System.out.print(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @PostMapping("/create")
+    public ResponseEntity<Void> createTarok( @Valid @RequestBody TarokRequest tarokko) {
+    	System.out.print("siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    	userdetailsService.saveTarok(tarokko);
+    	System.out.print("siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    
+    @GetMapping("/historyTaroks/{userName}")
+    public ResponseEntity<List<Letture>> gethistoryTaroks( @PathVariable("userName") String userName) {
+	 System.out.print("lllllllllknnnnnnnnnnnnnnn");	
+	 List<Letture> t=userdetailsService.geTaroksByUsername(userName);
+    	
+        return ResponseEntity.status(OK).body(t);
     }
 }

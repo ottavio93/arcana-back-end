@@ -24,8 +24,12 @@ import lombok.NoArgsConstructor;
 public class TarokRequest {
 
 	
-	    private String TarokkoName;
-	   private String description;
+	   
+	 private String descriptionPassato;
+
+	   private String descriptionPresente;
+
+	   private String descriptionFuturo;
 	    private int score ;
 	   private String userName;
 }

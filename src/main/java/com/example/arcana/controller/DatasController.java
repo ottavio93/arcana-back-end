@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.arcana.dto.ScoreRequest;
 import com.example.arcana.dto.TarokRequest;
-import com.example.arcana.model.Tarokko;
+import com.example.arcana.model.Letture;
 import com.example.arcana.model.User;
 import com.example.arcana.repository.TarokkoRepository;
 import com.example.arcana.repository.UserRepository;
@@ -28,8 +29,9 @@ import com.example.arcana.service.RefreshTokenService;
 import com.example.arcana.service.UserDetailsServiceImpl;
 
 import lombok.AllArgsConstructor;
+
 @RestController
-@RequestMapping("data")
+@RequestMapping("/data")
 @AllArgsConstructor
 public class DatasController {
 private final UserRepository u;
@@ -42,9 +44,9 @@ public ResponseEntity<Long> getScore( @PathVariable("userName") String userName)
     return ResponseEntity.status(OK).body(t);
 }
 @GetMapping("/historyTaroks/{userName}")
-	    public ResponseEntity<List<Tarokko>> gethistoryTaroks( @PathVariable("userName") String userName) {
+	    public ResponseEntity<List<Letture>> gethistoryTaroks( @PathVariable("userName") String userName) {
 		 System.out.print("lllllllllknnnnnnnnnnnnnnn");	
-		 List<Tarokko> t=userdetailsService.geTaroksByUsername(userName);
+		 List<Letture> t=userdetailsService.geTaroksByUsername(userName);
 	    	
 	        return ResponseEntity.status(OK).body(t);
 	    }
@@ -66,7 +68,8 @@ public ResponseEntity<Long> getScore( @PathVariable("userName") String userName)
 	
 	
 	    @PostMapping("/create")
-	    public ResponseEntity<Void> createTarok(@RequestBody TarokRequest tarokko) {
+	    public ResponseEntity<Void> createTarok(  @Valid  @RequestBody TarokRequest tarokko) {
+	    	System.out.print("siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 	    	userdetailsService.saveTarok(tarokko);
 	        return new ResponseEntity<>(HttpStatus.CREATED);
 	    }
