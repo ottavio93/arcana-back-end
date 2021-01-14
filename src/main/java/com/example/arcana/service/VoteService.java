@@ -2,6 +2,7 @@ package com.example.arcana.service;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import com.example.arcana.model.Post;
 import com.example.arcana.model.User;
 import com.example.arcana.model.Vote;
 import com.example.arcana.repository.PostRepository;
+import com.example.arcana.repository.UserRepository;
 import com.example.arcana.repository.VoteRepository;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +22,7 @@ import static  com.example.arcana.model.VoteType.UPVOTE;
 @Service
 @AllArgsConstructor
 public class VoteService {
-
+       private final UserRepository  userRepositrory;
     private final VoteRepository voteRepository;
     private final PostRepository postRepository;
     private final AuthService authService;
@@ -33,7 +35,13 @@ public class VoteService {
         		
                 .orElseThrow(() -> new SpringArcanaException("Post Not Found with ID - " + voteDto.getPostId()));
         System.out.print("noooooooookkonnnnnnnnnnnnnnnnknkhkjkgoooooooooooooooo");
-        Optional<Vote> voteByPostAndUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser());
+        User currentUser= userRepositrory.findByUsername(voteDto.getUserName())
+        .orElseThrow(() -> new UsernameNotFoundException(voteDto.getUserName()));
+       
+        
+        
+        Optional<Vote> voteByPostAndUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post,currentUser);
+        
         User userPost=post.getUser();
         if (voteByPostAndUser.isPresent() &&
                 voteByPostAndUser.get().getVoteType()
@@ -51,10 +59,12 @@ public class VoteService {
     }
 
     private Vote mapToVote(VoteDto voteDto, Post post) {
+    	 User currentUser= userRepositrory.findByUsername(voteDto.getUserName())
+    		        .orElseThrow(() -> new UsernameNotFoundException(voteDto.getUserName()));
         return Vote.builder()
                 .voteType(voteDto.getVoteType())
                 .post(post)
-                .user(authService.getCurrentUser())
+                .user(currentUser)
                 .build();
     }
 }
