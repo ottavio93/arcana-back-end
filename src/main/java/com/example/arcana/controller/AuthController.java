@@ -1,5 +1,6 @@
 package com.example.arcana.controller;
 
+import org.hibernate.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,16 +9,23 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.example.arcana.dto.AuthenticationResponse;
 import com.example.arcana.dto.LoginRequest;
+import com.example.arcana.dto.PostRequest;
 import com.example.arcana.dto.RefreshTokenRequest;
 import com.example.arcana.dto.RegisterRequest;
 import com.example.arcana.dto.ScoreRequest;
 import com.example.arcana.dto.TarokRequest;
+import com.example.arcana.dto.VoteDto;
+import com.example.arcana.dto.VoteRequest;
 import com.example.arcana.model.Letture;
+import com.example.arcana.model.Post;
 import com.example.arcana.model.User;
+import com.example.arcana.repository.PostRepository;
 import com.example.arcana.repository.UserRepository;
 import com.example.arcana.service.AuthService;
+import com.example.arcana.service.PostService;
 import com.example.arcana.service.RefreshTokenService;
 import com.example.arcana.service.UserDetailsServiceImpl;
+import com.example.arcana.service.VoteService;
 
 import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
@@ -39,7 +47,9 @@ private final AuthService authService;
 private final RefreshTokenService refreshTokenService;
 private final UserDetailsServiceImpl userdetailsService;
 private final UserRepository u;
-
+private final PostService postService ;
+private final PostRepository postRepository;
+private final VoteService voteService ;
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
@@ -102,6 +112,63 @@ private final UserRepository u;
     }
     
     
+    
+    @PostMapping("/createPost")
+    public ResponseEntity<Void> createPost( @Valid @RequestBody PostRequest tarokko) {
+    	System.out.print("noooooooooooooo");
+    	postService.createPost(tarokko);
+    	System.out.print("noooooooooooooooooooooooooo");
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    
+    
+    @PostMapping("/voto")
+public ResponseEntity<Void> votePost(@Valid @RequestBody VoteDto voteDto) {
+    	System.out.print("noooooooooooooo");
+    	voteService.vote(voteDto);
+//    	Optional<Post> postOptional=postRepository.findById(voteDto.getPostId());
+//    	
+//    	System.out.print("noooooooooooooooooooooooooo");
+//    	Post post = postOptional
+//  			  .orElseThrow(() -> new UsernameNotFoundException("No user " +
+//  			  "Found with username : " ));
+//    	User user =post.getUser();
+//    	user.setScore(user.getScore()+5);
+//    	u.save(user);
+//    	System.out.print("noooooooooooooooooooooooooo"+user);
+//    	post.votaPositivo()	 ; 
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    
+    @PostMapping("/votomeno")
+   public ResponseEntity<Void> votePostmeno(@RequestBody VoteRequest voteRequest) {
+    	System.out.print("noooooooooooooo");
+    	
+    	Optional<Post> postOptional=postRepository.findById((long) voteRequest.getIdPost());
+    	Optional<User> userOptional=u.findById((long) voteRequest.getIdUser());
+    	System.out.print("noooooooooooooooooooooooooo");
+    	
+    	Post post = postOptional
+    			
+  			  .orElseThrow(() -> new UsernameNotFoundException("No user " +
+  			  "Found with username : " ));
+    	User user =post.getUser();
+    	user.setScore(user.getScore()-5);
+    	u.save(user);
+    	System.out.print("bikkkooooooooooo"+user);
+    	post.votaPositivo()	 ; 
+    	voteRequest.setEnabled(false);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    
+    
+   
+    
+    
     @GetMapping("/historyTaroks/{userName}")
     public ResponseEntity<List<Letture>> gethistoryTaroks( @PathVariable("userName") String userName) {
 	 System.out.print("lllllllllknnnnnnnnnnnnnnn");	
@@ -109,4 +176,12 @@ private final UserRepository u;
     	
         return ResponseEntity.status(OK).body(t);
     }
+    @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getAllPost( ) {
+	 System.out.print("lllllllllknnnnnnnnnnnnnnn");	
+	 List<Post> t=postRepository.findAll();
+    	
+        return ResponseEntity.status(OK).body(t);
+    }
 }
+

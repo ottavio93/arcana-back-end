@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
@@ -21,20 +23,27 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long postId;
-    @NotBlank(message = "Post Name cannot be empty or Null")
-    private String postName;
-    @Nullable
-    private String url;
+    private long postId;
+
+  
+    private String  createdDate;
+    
     @Nullable
     @Lob
     private String description;
-    private Integer voteCount = 0;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
-    private Instant createdDate;
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private SubArcana subArcana;
+    
+    
+ public void  votaPositivo() {
+	long punteggioNuovo=user.getScore()+5;
+	 user.setScore(punteggioNuovo);
+ }
+ public void  votaNegativo() {
+	 long punteggioNuovo=user.getScore()-5;
+	 user.setScore(punteggioNuovo);
+ }
 }

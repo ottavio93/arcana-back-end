@@ -36,5 +36,5 @@ public class User implements Serializable{
     private String email;
     private Instant created;
     private boolean enabled;
-    private int score;
+    private long score;
 }
