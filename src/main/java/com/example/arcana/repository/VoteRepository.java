@@ -9,5 +9,10 @@ import com.example.arcana.model.User;
 import com.example.arcana.model.Vote;
 @Repository
 public interface  VoteRepository extends JpaRepository<Vote, Long>  {
-	  Optional<Vote> findTopByPostAndUserOrderByVoteIdDesc(Post post, User currentUser);
+//	  Optional<Vote> findTopByPostAndUserOrderByVoteIdDesc(long post, String currentUser);
+//	  Optional<Vote> findVoteByPostIdAndUserName(long postId, String userName);
+//	  Optional<Vote> findVoteById(Long voteId);
+
+	Optional<Vote> findTopByPostAndUserOrderByVoteIdDesc(Post post, User currentUser);
 }
+

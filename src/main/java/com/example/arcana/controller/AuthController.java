@@ -15,7 +15,7 @@ import com.example.arcana.dto.RegisterRequest;
 import com.example.arcana.dto.ScoreRequest;
 import com.example.arcana.dto.TarokRequest;
 import com.example.arcana.dto.VoteDto;
-import com.example.arcana.dto.VoteRequest;
+
 import com.example.arcana.model.Letture;
 import com.example.arcana.model.Post;
 import com.example.arcana.model.User;
@@ -141,29 +141,35 @@ public ResponseEntity<Void> votePost(@Valid @RequestBody VoteDto voteDto) {
 //    	post.votaPositivo()	 ; 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    
-    
-    @PostMapping("/votomeno")
-   public ResponseEntity<Void> votePostmeno(@RequestBody VoteRequest voteRequest) {
+    @PostMapping("/votoMeno")
+public ResponseEntity<Void> votePostMeno(@Valid @RequestBody VoteDto voteDto) {
     	System.out.print("noooooooooooooo");
-    	
-    	Optional<Post> postOptional=postRepository.findById((long) voteRequest.getIdPost());
-    	Optional<User> userOptional=u.findById((long) voteRequest.getIdUser());
-    	System.out.print("noooooooooooooooooooooooooo");
-    	
-    	Post post = postOptional
-    			
-  			  .orElseThrow(() -> new UsernameNotFoundException("No user " +
-  			  "Found with username : " ));
-    	User user =post.getUser();
-    	user.setScore(user.getScore()-5);
-    	u.save(user);
-    	System.out.print("bikkkooooooooooo"+user);
-    	post.votaPositivo()	 ; 
-    	voteRequest.setEnabled(false);
+    	voteService.voteMeno(voteDto);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    
+//    
+//    @PostMapping("/votomeno")
+//   public ResponseEntity<Void> votePostmeno(@RequestBody VoteRequest voteRequest) {
+//    	System.out.print("noooooooooooooo");
+//    	
+//    	Optional<Post> postOptional=postRepository.findById((long) voteRequest.getIdPost());
+//    	Optional<User> userOptional=u.findById((long) voteRequest.getIdUser());
+//    	System.out.print("noooooooooooooooooooooooooo");
+//    	
+//    	Post post = postOptional
+//    			
+//  			  .orElseThrow(() -> new UsernameNotFoundException("No user " +
+//  			  "Found with username : " ));
+//    	User user =post.getUser();
+//    	user.setScore(user.getScore()-5);
+//    	u.save(user);
+//    	System.out.print("bikkkooooooooooo"+user);
+//    	post.votaPositivo()	 ; 
+//    	voteRequest.setEnabled(false);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
+//    
     
     
    

@@ -40,7 +40,8 @@ import java.util.Optional;
   private final TarokkoRepository taroccoRepository;
   @Override
   
-  @Transactional(readOnly = true) public UserDetails loadUserByUsername(String
+  @Transactional(readOnly = true) 
+  public UserDetails loadUserByUsername(String
   username) { Optional<User> userOptional =
   userRepository.findByUsername(username); User user = userOptional
   .orElseThrow(() -> new UsernameNotFoundException("No user " +
@@ -57,7 +58,8 @@ import java.util.Optional;
   
 
   
-  @Transactional(readOnly = true)public long getScoreByUsername(String
+  @Transactional(readOnly = true)
+  public long getScoreByUsername(String
   username) { 
 	  Optional<User> userOptional =
   userRepository.findByUsername(username); 

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.arcana.dto.PostRequest;
+import com.example.arcana.dto.PostResponse;
 import com.example.arcana.dto.TarokRequest;
+import com.example.arcana.exception.PostNotFoundException;
 import com.example.arcana.model.Letture;
 import com.example.arcana.model.Post;
 import com.example.arcana.model.User;
@@ -73,6 +75,15 @@ private final PostRepository postRepository;
     	postRepository.save(post);
     }
    
+    
+    
+   
+    @Transactional(readOnly = true)
+    public Post getPost(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+        return post;
+    }
 //    public void saveTarok(TarokRequest
 //  		  tarokRequest) { 
 //  	  Letture tarok = new Letture();
