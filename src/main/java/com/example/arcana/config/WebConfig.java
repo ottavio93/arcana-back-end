@@ -14,11 +14,21 @@ package com.example.arcana.config;
   @EnableWebMvc public class WebConfig implements WebMvcConfigurer {
   
   @Override public void addCorsMappings(CorsRegistry corsRegistry) {
-  corsRegistry.addMapping("/**") .allowedOriginPatterns("/**") .allowedOrigins("*") .allowedMethods("*")
-  .maxAge(3600L) .allowedHeaders("*")  .exposedHeaders("Authorization") 
+  corsRegistry.addMapping("/**") .allowedOriginPatterns("/**") .allowedOrigins("*") .allowedMethods("PUT","POST","GET","OPTIONS")
+  .maxAge(3600L) .allowedHeaders("*")  
    
   ;
-   }}
+   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  }
 //  
 //  @Override public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //  registry.addResourceHandler("swagger-ui.html")

@@ -1,5 +1,6 @@
 package com.example.arcana.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,6 @@ public interface  VoteRepository extends JpaRepository<Vote, Long>  {
 //	  Optional<Vote> findVoteById(Long voteId);
 
 	Optional<Vote> findTopByPostAndUserOrderByVoteIdDesc(Post post, User currentUser);
+	List<Vote> removeByPost(Post post);
 }
 

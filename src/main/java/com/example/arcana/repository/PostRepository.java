@@ -16,6 +16,6 @@ import java.util.Optional;
  
  List<Post> findByUser(User user); 
  Optional<User> findUserByPostId(long id);
- 
+ Optional<Post> findById(Long PostId);
  
  }

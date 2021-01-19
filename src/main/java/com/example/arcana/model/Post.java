@@ -23,7 +23,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Post {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private long postId;
+    private Long postId;
 
   
     private String  createdDate;

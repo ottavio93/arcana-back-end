@@ -5,7 +5,7 @@ import com.example.arcana.exception.SpringArcanaException;
 import java.util.Arrays;
 
 public enum VoteType {
-	UPVOTE(5), DOWNVOTE(-5),
+	UPVOTE(5), DOWNVOTE(-5),NONMIPIACE(-10)
     ;
 
     private int direction;

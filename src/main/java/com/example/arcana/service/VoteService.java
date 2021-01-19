@@ -22,6 +22,7 @@ import com.example.arcana.repository.VoteRepository;
 import lombok.AllArgsConstructor;
 import static com.example.arcana.model.VoteType.UPVOTE;
 import static com.example.arcana.model.VoteType.DOWNVOTE;
+import static com.example.arcana.model.VoteType.NONMIPIACE;
 @Service
 @AllArgsConstructor
 public class VoteService {
@@ -70,6 +71,18 @@ public class VoteService {
 	        	
 	        	 System.out.println("6666666666666666");
 	        }
+	        
+	        
+	        
+	        else if (voteByPostAndUser.isPresent() &&
+	                voteByPostAndUser.get().getVoteType()
+	                        .equals(NONMIPIACE)) {
+	        	userPost.setScore(userPost.getScore() + 10);
+	        	voteByPostAndUser.get().setVoteType(UPVOTE);
+              
+	        	
+	        	 System.out.println("6666666666666666");
+	        }
 	        else if (!voteByPostAndUser.isPresent() ) {
 	           userPost.setScore(userPost.getScore() + 5);
 	         
@@ -111,20 +124,33 @@ public class VoteService {
 	        if (voteByPostAndUser.isPresent() &&
 	                voteByPostAndUser.get().getVoteType()
 	                        .equals(UPVOTE)) {
-	        	userPost.setScore(userPost.getScore() -5);
-	        	voteByPostAndUser.get().setVoteType(DOWNVOTE);
+	        	userPost.setScore(userPost.getScore() -10);
+	        	voteByPostAndUser.get().setVoteType(NONMIPIACE);
 	        	
 	        	 System.out.println("777777777777");
 	        }
 	        else if (voteByPostAndUser.isPresent() &&
 	                voteByPostAndUser.get().getVoteType()
-	                        .equals(DOWNVOTE)) {
+	                        .equals(NONMIPIACE)) {
 	        	userPost.setScore(userPost.getScore() +5);
-	        	voteByPostAndUser.get().setVoteType(UPVOTE);
+	        	voteByPostAndUser.get().setVoteType(DOWNVOTE);
             
 	        	
 	        	 System.out.println("6666666666666666");
 	        }
+	        
+	        else if (voteByPostAndUser.isPresent() &&
+	                voteByPostAndUser.get().getVoteType()
+	                        .equals(DOWNVOTE)) {
+	        	userPost.setScore(userPost.getScore() -5);
+	        	voteByPostAndUser.get().setVoteType(NONMIPIACE);
+            
+	        	
+	        	 System.out.println("6666666666666666");
+	        }
+	        
+	        
+	        
 	        else if (!voteByPostAndUser.isPresent() ) {
 	           userPost.setScore(userPost.getScore()-5);
 	         
@@ -161,6 +187,13 @@ public class VoteService {
 	                .build();
 	    }
 	
+	  
+	  
+	  @Transactional 
+	  public void rimuovi(Post post) {
+		  voteRepository.removeByPost(post);
+	  }
+	  
 	}
 
 	

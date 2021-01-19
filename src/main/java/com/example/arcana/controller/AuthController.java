@@ -3,24 +3,29 @@ package com.example.arcana.controller;
 import org.hibernate.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.arcana.dto.AuthenticationResponse;
 import com.example.arcana.dto.LoginRequest;
+import com.example.arcana.dto.PostDelete;
 import com.example.arcana.dto.PostRequest;
 import com.example.arcana.dto.RefreshTokenRequest;
 import com.example.arcana.dto.RegisterRequest;
 import com.example.arcana.dto.ScoreRequest;
 import com.example.arcana.dto.TarokRequest;
 import com.example.arcana.dto.VoteDto;
-
+import com.example.arcana.exception.PostNotFoundException;
 import com.example.arcana.model.Letture;
 import com.example.arcana.model.Post;
 import com.example.arcana.model.User;
 import com.example.arcana.repository.PostRepository;
 import com.example.arcana.repository.UserRepository;
+import com.example.arcana.repository.VoteRepository;
 import com.example.arcana.service.AuthService;
 import com.example.arcana.service.PostService;
 import com.example.arcana.service.RefreshTokenService;
@@ -35,6 +40,7 @@ import static org.springframework.http.HttpStatus.OK;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 
@@ -49,7 +55,9 @@ private final UserDetailsServiceImpl userdetailsService;
 private final UserRepository u;
 private final PostService postService ;
 private final PostRepository postRepository;
+private final  VoteRepository voteRepository;
 private final VoteService voteService ;
+
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
@@ -102,6 +110,8 @@ private final VoteService voteService ;
     	System.out.print(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    
+    
     @PostMapping("/create")
     public ResponseEntity<Void> createTarok( @Valid @RequestBody TarokRequest tarokko) {
     	System.out.print("siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
@@ -121,7 +131,33 @@ private final VoteService voteService ;
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    
+   
+    @Transactional
+    @PostMapping("/deletePost")
+    public ResponseEntity<Void> deletePost( @RequestBody PostDelete postDelete) {
+    	System.out.print("noooooooooooooo");
+//    	auth = SecurityContextHolder.getContext().getAuthentication();
+//    	
+//    	String username = auth.getName();
+//    	System.out.print("allora che si fan             "+username);
+//    	if (username.equals(postDelete.getUserName())) {
+    	Optional<Post> optionalpost=postRepository.findById(postDelete.getPostId());
+     	System.out.println("fatto");
+    	Post post = optionalpost
+  			  .orElseThrow(() -> new PostNotFoundException(postDelete.getPostId()));
+       	System.out.print("noooooooofffddddddddddddddddddddoooooo");
+    	voteRepository.removeByPost(post);
+    	postRepository.deleteById(postDelete.getPostId());
+    	System.out.print("cancellato");
+
+        
+//    }
+//    	else {
+//        	System.out.print("non buono");
+//
+//    	}
+    	return new ResponseEntity<>(HttpStatus.CREATED);
+    }
     
     
     @PostMapping("/voto")
