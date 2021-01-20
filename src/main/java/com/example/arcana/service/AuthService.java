@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.arcana.config.AppConfig;
 import com.example.arcana.dto.AuthenticationResponse;
 import com.example.arcana.dto.LoginRequest;
 import com.example.arcana.dto.RefreshTokenRequest;
@@ -44,7 +45,8 @@ public class AuthService {
    private final JwtProvider  jwtProvider;
    private final RefreshTokenService refreshTokenService;
    private final TarokkoRepository taroccoRepository;
-    @Transactional
+   private final AppConfig appConfig;
+   @Transactional
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
@@ -59,8 +61,9 @@ public class AuthService {
         
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), "Thank you for signing up to Spring Reddit, " +
-                "please click on the below url to activate your account : " +verifyPath
-             ));
+                "please click on the below url to activate your account : " +verifyPath+
+                appConfig.getAppUrl() + "/api/auth/accountVerification/" + token
+        		));
     }
     
     @Transactional(readOnly = true)

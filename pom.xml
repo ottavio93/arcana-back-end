@@ -137,6 +137,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>spring-boot-aws-exe</finalName>
 	</build>
 
 </project>
