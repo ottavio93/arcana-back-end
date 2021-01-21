@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.arcana.exception.SpringArcanaException;
@@ -17,7 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Transactional
 public class RefreshTokenService {
-
+   @Autowired
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshToken generateRefreshToken() {
