@@ -35,12 +35,13 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class AuthService {
-	 @Autowired
+
 	  private final AuthenticationManager authenticationManager;
-	 @Autowired
+	
     private final PasswordEncoder passwordEncoder;
-	 @Autowired
+	
     private final UserRepository userRepository;
     @Autowired
     private final VerificationTokenRepository verificationTokenRepository;

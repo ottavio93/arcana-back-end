@@ -22,7 +22,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.arcana.security.JwtAuthenticationFilter;
+//import com.example.arcana.security.JwtAuthenticationFilter;
 
 import lombok.AllArgsConstructor;
   
@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
   public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  
 	    private final UserDetailsService userDetailsService;
-	    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//	    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	    
 	    @Bean(BeanIds.AUTHENTICATION_MANAGER)
 	    @Override
@@ -67,8 +67,8 @@ import lombok.AllArgsConstructor;
           .permitAll()
           .anyRequest()
           .authenticated();
-    	  httpSecurity.addFilterBefore(jwtAuthenticationFilter,
-                  UsernamePasswordAuthenticationFilter.class);
+//    	  httpSecurity.addFilterBefore(jwtAuthenticationFilter,
+//                  UsernamePasswordAuthenticationFilter.class);
     	
       }
       
