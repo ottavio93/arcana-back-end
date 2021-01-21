@@ -24,7 +24,7 @@ import static io.jsonwebtoken.Jwts.parser; import static java.util.Date.from;
   
   private KeyStore keyStore;
   
-  @Value("${jwt.expiration.time}") 
+//  @Value("${jwt.expiration.time}") 
   private Long jwtExpirationInMillis;
   
   @PostConstruct public void init() { try { keyStore =
@@ -41,13 +41,13 @@ import static io.jsonwebtoken.Jwts.parser; import static java.util.Date.from;
   (User) authentication.getPrincipal(); return Jwts.builder()
   .setSubject(principal.getUsername()) .setIssuedAt(from(Instant.now()))
  // .signWith(getPrivateKey())
-  .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
+  .setExpiration(Date.from(Instant.now().plusMillis(100000000)))
   .compact(); }
   
   public String generateTokenWithUserName(String username) { return
   Jwts.builder() .setSubject(username) .setIssuedAt(from(Instant.now()))
   .signWith(getPrivateKey())
-  .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
+  .setExpiration(Date.from(Instant.now().plusMillis(100000000)))
   .compact(); }
   
   private PrivateKey getPrivateKey() { try { return (PrivateKey)
@@ -71,5 +71,5 @@ import static io.jsonwebtoken.Jwts.parser; import static java.util.Date.from;
   
   return claims.getSubject(); }
   
-  public Long getJwtExpirationInMillis() { return jwtExpirationInMillis; } }
+  public Long getJwtExpirationInMillis() { return (long) 100000000; } }
  
