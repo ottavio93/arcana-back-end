@@ -49,6 +49,8 @@ import lombok.AllArgsConstructor;
           .permitAll()
           .antMatchers(HttpMethod.GET, "/api/subarcana")
           .permitAll()
+          .antMatchers(HttpMethod.GET, "/**")
+          .permitAll()
           .antMatchers(HttpMethod.GET, "/api/posts/")
           .permitAll()
           .antMatchers(HttpMethod.GET, "/api/posts/**")
