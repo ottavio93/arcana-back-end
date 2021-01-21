@@ -119,18 +119,29 @@
 		<dependency>
   <groupId>org.postgresql</groupId>
   <artifactId>postgresql</artifactId>
- 
+
 </dependency>
 		
 	</dependencies>
-
+ 
 	<build>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				  
 				<configuration>
+				
+				
+				
+				<resource>
+     <directory>src/main/resources</directory>
+     <filtering>true</filtering>
+     <includes>
+          <include>**/*.properties</include>
+     </includes>
+</resource>
 				  <source>1.7</source>
         <target>1.7</target>
 					<excludes>
