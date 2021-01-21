@@ -24,7 +24,7 @@ import static io.jsonwebtoken.Jwts.parser; import static java.util.Date.from;
   
   private KeyStore keyStore;
   
-//  @Value("${jwt.expiration.time}") 
+  @Value("${jwt.expiration.time}") 
   private Long jwtExpirationInMillis;
   
   @PostConstruct public void init() { try { keyStore =
