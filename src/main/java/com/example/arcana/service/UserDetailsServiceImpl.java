@@ -8,8 +8,8 @@ import java.time.Instant;
 
 import lombok.AllArgsConstructor;
 
-  
-  import org.springframework.security.core.GrantedAuthority; import
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority; import
   org.springframework.security.core.authority.SimpleGrantedAuthority; import
   org.springframework.security.core.userdetails.UserDetails; import
   org.springframework.security.core.userdetails.UserDetailsService; import
@@ -35,8 +35,9 @@ import java.util.Optional;
   
   @AllArgsConstructor public class UserDetailsServiceImpl implements
   UserDetailsService { 
-	
+ @Autowired
   private final UserRepository userRepository;
+ @Autowired
   private final TarokkoRepository taroccoRepository;
   @Override
   
