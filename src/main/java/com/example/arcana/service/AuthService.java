@@ -66,7 +66,7 @@ public class AuthService {
         
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), "Thank you for signing up to Spring Reddit, " +
-                "please click on the below url to activate your account : " +verifyPath+
+                "please click on the below url to activate your account : " +
                 appConfig.getAppUrl() + "/api/auth/accountVerification/" + token
         		));
     }
