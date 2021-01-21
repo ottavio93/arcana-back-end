@@ -21,7 +21,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-//@Table(name = "arcana_users", schema = "arcana")
+@Table(name = "arcana_users", schema = "de1rahdv1sqjnb")
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = IDENTITY)
