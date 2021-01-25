@@ -34,7 +34,7 @@ class MailService {
             log.info("Activation email sent!!");
         } catch (MailException e) {
             log.error("Exception occurred when sending mail", e);
-            throw new SpringArcanaException("Exception occurred when sendingg mail to " + notificationEmail.getRecipient(), e);
+            throw new SpringArcanaException("Exceptgion occurred when sendingg mail to " + notificationEmail.getRecipient(), e);
         }
     }
 
